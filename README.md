@@ -4,22 +4,32 @@ A Laravel SDK for interacting with the Dokan ZATCA-2 API.
 
 ## Installation
 
+You can install the package via composer:
+
 ```bash
 composer require dokan-e-commerce/compliance-laravel-sdk
 ```
 
 ## Setup
 
-1. Publish the config:
+1. Publish the config file:
 ```bash
 php artisan vendor:publish --provider="Dokan\Compliance\ComplianceServiceProvider" --tag="compliance-config"
 ```
 
-2. Add to `.env`:
+2. Add these variables to your `.env` file:
 ```
-DOKAN_COMPLIANCE_API_URL=https://compliance.dokan.sa/api
+DOKAN_COMPLIANCE_API_URL=https://compliance.dokan.sa/api/v1
 DOKAN_COMPLIANCE_API_KEY=your-api-key
 ```
+
+3. Get your API token:
+   - Visit [Dokan Compliance Portal](https://compliance.dokan.sa/)
+   - Sign in to your account / register 
+   - Create business entity if you dont have, and onboard your business
+   - Navigate to the API Tokens section
+   - Create a new API token
+   - Copy the generated token and use it as your `DOKAN_COMPLIANCE_API_KEY`
 
 ## Usage
 
