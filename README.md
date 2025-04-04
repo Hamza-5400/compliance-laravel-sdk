@@ -1,6 +1,6 @@
-# Dokan Compliance Laravel SDK (ZATCA Phase 2)
+# Dokan Compliance Laravel SDK (ZATCA Phase 2 Reporting)
 
-A Laravel SDK for interacting with the Dokan ZATCA-2 API.
+A Laravel SDK for interacting with the Dokan Compliance API. an easy way to integreate with zatca-phase-2.
 
 ## Installation
 
@@ -12,7 +12,7 @@ composer require dokan-e-commerce/compliance-laravel-sdk
 
 ## Setup
 
-1. Publish the config file:
+1. Publish the config file (Optional):
 ```bash
 php artisan vendor:publish --provider="Dokan\Compliance\ComplianceServiceProvider" --tag="compliance-config"
 ```
@@ -63,6 +63,12 @@ $invoiceRequest = new CreateInvoiceRequest(
         new LineItem(
             label: 'Chicken Shawarma',
             price: 6,
+            quantity: 2,
+            is_vat_inclusive: true
+        ),
+        new LineItem(
+            label: 'Meat Shawarma',
+            price: 8,
             quantity: 2,
             is_vat_inclusive: true
         )
