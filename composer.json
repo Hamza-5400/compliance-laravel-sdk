@@ -1,0 +1,56 @@
+{
+    "name": "dokan-e-commerce/compliance-laravel-sdk",
+    "description": "Laravel SDK for Dokan ZATCA Phase 2 Compliance API - Streamline your e-invoicing compliance",
+    "type": "library",
+    "keywords": [
+        "dokan",
+        "zatca",
+        "e-invoicing",
+        "saudi-arabia",
+        "laravel",
+        "zatca-phase-2",
+        "laravel-zatca-phase-2",
+        "e-reporting"
+    ],
+    "homepage": "https://github.com/dokan-e-commerce/compliance-laravel-sdk",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Dokan Dev Team",
+            "email": "dev@dokan.sa",
+            "homepage": "https://dokan.sa",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.0|^8.1|^8.2|^8.3",
+        "illuminate/support": "^9.0|^10.0",
+        "guzzlehttp/guzzle": "^7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0|^10.0",
+        "orchestra/testbench": "^7.0|^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dokan\\Compliance\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Dokan\\Compliance\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Dokan\\Compliance\\ComplianceServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+} 
