@@ -19,7 +19,6 @@ php artisan vendor:publish --provider="Dokan\Compliance\ComplianceServiceProvide
 
 2. Add these variables to your `.env` file:
 ```
-DOKAN_COMPLIANCE_API_URL=https://compliance.dokan.sa/api/v1
 DOKAN_COMPLIANCE_API_KEY=your-api-key
 ```
 
