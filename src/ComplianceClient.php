@@ -51,7 +51,13 @@ class ComplianceClient
     public function createInvoice(array $data, bool $queue = false, ?string $queueName = null): ?array
     {
         if ($queue) {
-            Bus::dispatch(new CreateInvoiceJob($data, $queueName));
+            $job = new CreateInvoiceJob($data);
+            
+            if ($queueName) {
+                $job->onQueue($queueName);
+            }
+            
+            Bus::dispatch($job);
             return null;
         }
 

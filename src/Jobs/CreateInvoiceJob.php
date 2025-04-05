@@ -33,12 +33,8 @@ class CreateInvoiceJob implements ShouldQueue
      * Create a new job instance.
      */
     public function __construct(
-        protected array $invoiceData,
-        protected ?string $queue = null
+        protected array $invoiceData
     ) {
-        if ($queue) {
-            $this->onQueue($queue);
-        }
     }
 
     /**
